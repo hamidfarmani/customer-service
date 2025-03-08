@@ -14,7 +14,7 @@ export default function DashboardLayout({
       <AppSidebar />
       <main className="flex-1">
         <Header />
-        <div>{children}</div>
+        <div className="flex-1 flex flex-col">{children}</div>
       </main>
     </SidebarProvider>
   );

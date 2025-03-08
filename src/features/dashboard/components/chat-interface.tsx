@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { processCustomerMessage } from "../services/customer-service";
 import { MessageBubble } from "./message-bubble";
 import WelcomeMessage from "./welcome-message";
 
@@ -42,18 +43,87 @@ export default function ChatInterface({
 
     setIsLoading(true);
 
-    setTimeout(() => {
-      const newMessage: Message = {
-        id: `${Date.now()}`,
-        content: input,
-        role: "user",
+    const userMessage: Message = {
+      id: `user-${Date.now()}`,
+      content: input,
+      role: "user",
+    };
+
+    setMessages((prevMessages) => [...prevMessages, userMessage]);
+    setInput("");
+
+    try {
+      const response = await processCustomerMessage(
+        userMessage.content,
+        chatId
+      );
+
+      if (response.error) {
+        const errorMessage: Message = {
+          id: `error-${Date.now()}`,
+          content: `Sorry, I encountered an error: ${response.error.message}`,
+          role: "assistant",
+        };
+
+        setMessages((prevMessages) => [...prevMessages, errorMessage]);
+        setIsLoading(false);
+        return;
+      }
+
+      let responseContent = "";
+
+      if (response.messageType === "Feedback") {
+        const sentiment = response.feedback?.isPositive
+          ? "positive"
+          : "negative";
+        responseContent = `Thank you for your ${sentiment} feedback. We appreciate your input!`;
+      } else if (response.messageType === "Support") {
+        if (response.support?.type === "Bug") {
+          const severity = response.support.bug?.severity || "unknown";
+          responseContent = `We've logged your bug report with ${severity} severity. Our team will look into this issue.`;
+        } else if (response.support?.type === "TechnicalQuestion") {
+          if (response.support.technicalQuestion?.answered) {
+            responseContent = `${response.support.technicalQuestion.answer}\n\nHere are some helpful resources:\n`;
+            response.support.technicalQuestion.links?.forEach(
+              (link: string) => {
+                responseContent += `- ${link}\n`;
+              }
+            );
+          } else {
+            responseContent =
+              "We've received your technical question and will get back to you soon.";
+          }
+        }
+      } else if (response.messageType === "Spam") {
+        responseContent =
+          "We've received your message. If you have any specific questions about our services, please let us know.";
+      } else {
+        responseContent =
+          "Thank you for your message. How else can I assist you today?";
+      }
+
+      const aiMessage: Message = {
+        id: `ai-${Date.now()}`,
+        content: responseContent,
+        role: "assistant",
       };
 
-      setMessages((prevMessages) => [...prevMessages, newMessage]);
-      setStreamedResponse("This is a hardcoded response from the AI agent.");
+      setStreamedResponse(null);
+      setMessages((prevMessages) => [...prevMessages, aiMessage]);
+    } catch (error) {
+      console.error("Error processing message:", error);
+
+      const errorMessage: Message = {
+        id: `error-${Date.now()}`,
+        content:
+          "Sorry, I encountered an error processing your request. Please try again.",
+        role: "assistant",
+      };
+
+      setMessages((prevMessages) => [...prevMessages, errorMessage]);
+    } finally {
       setIsLoading(false);
-      setInput("");
-    }, 1000);
+    }
   };
 
   return (
