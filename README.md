@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Customer Service AI Assistant
+
+A modern customer service application built with Next.js that leverages LangGraph and OpenAI to intelligently process customer inquiries, feedback, and support requests.
+
+## Features
+
+- **Smart Message Processing**: Automatically categorizes and processes customer messages using LangGraph
+- **Feedback Analysis**: Identifies positive and negative feedback in customer messages
+- **Technical Support**: Handles bug reports and technical questions with appropriate responses
+- **Modern UI**: Clean, responsive interface built with Tailwind CSS and Radix UI components
+- **Real-time Interactions**: Immediate responses to customer inquiries
+
+## Tech Stack
+
+- **Frontend**: Next.js 15, React 19, Tailwind CSS 4
+- **AI/ML**: LangGraph, OpenAI
+- **Styling**: Tailwind CSS, Radix UI components
+- **Type Safety**: TypeScript
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18.17 or later
+- pnpm (recommended) or npm
+
+### Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/hamidfarmani/customer-service.git
+   cd customer-service
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   pnpm install
+   ```
+
+3. Set up environment variables:
+   - Copy `.env.example` to `.env.local`
+   - Add your OpenAI API key and other required variables
+
+### Running the Development Server
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `/src/app`: Next.js app router pages and layouts
+- `/src/components`: Reusable UI components
+- `/src/features`: Feature-specific components, models, and services
+- `/src/lib`: Utility functions and LangGraph implementation
+- `/src/hooks`: Custom React hooks
 
-## Learn More
+## Usage
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Navigate to the dashboard
+2. Enter customer messages in the chat interface
+3. The system will automatically:
+   - Categorize the message (feedback, bug report, technical question)
+   - Generate appropriate responses
+   - Provide support information when needed
