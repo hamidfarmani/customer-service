@@ -38,9 +38,9 @@ export const processSupportBugEdges = async (
   "bug-severity-low" | "bug-severity-medium" | "bug-severity-high"
 > => {
   switch (state.support.bug?.severity) {
-    case "High":
+    case "high":
       return "bug-severity-high";
-    case "Medium":
+    case "medium":
       return "bug-severity-medium";
     default:
       return "bug-severity-low";

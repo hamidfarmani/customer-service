@@ -71,7 +71,7 @@ export const bugSeverityHigh = async (state: State): Promise<Update> => {
     state.support.bug?.description
   );
   console.log(
-    "Searching for staff on support duty and send notifcation via slack"
+    "Searching for staff on support duty and send notification via slack"
   );
   return {};
 };
